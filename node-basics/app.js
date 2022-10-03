@@ -32,23 +32,21 @@ const server = http.createServer( (req, res) => {
         // Request + ON = Event Listener about data chunks.... until to be ready
         // data is what is comming, like a chunks... piece of piece
         req.on('data', (chunk) =>{
-            console.log('chunk: ');
-            console.log(chunk);
             body.push(chunk);
         });
 
         // End is as a bustop, where we can interact with our chunks
-        req.on('end', () => {
+        return req.on('end', () => {
             const parsedBody = Buffer.concat(body).toString();
-            console.log('parsedBody: ');
-            console.log(parsedBody);
             const message = parsedBody.split('=')[1];
-            fs.writeFileSync('./node-basics/message.txt', message);
+            
+            // Using writeFile + Callback means we will wait the FS finish their job, and then return response to the client
+            fs.writeFile('./node-basics/message.txt', message, (error) => {
+                res.statusCode = 302;
+                res.setHeader('Location', '/'); // The browser will redirect use to this location, therefore the '/' path
+                return res.end();
+            });
         });
-
-        res.statusCode = 302;
-        res.setHeader('Location', '/'); // The browser will redirect use to this location, therefore the '/' path
-        return res.end();
     };
 
     res.write(`<html>
