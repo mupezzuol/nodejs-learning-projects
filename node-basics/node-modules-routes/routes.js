@@ -36,7 +36,7 @@ const requestHandler = (req, res) => {
             const message = parsedBody.split('=')[1];
             
             // Using writeFile + Callback means we will wait the FS finish their job, and then return response to the client
-            fs.writeFile('./node-basics/message.txt', message, (error) => {
+            fs.writeFile('./node-basics/node-modules-routes/message.txt', message, (error) => {
                 res.statusCode = 302;
                 res.setHeader('Location', '/'); // The browser will redirect use to this location, therefore the '/' path
                 return res.end();
