@@ -1,3 +1,10 @@
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# CUSTOM - Dependency directories
+node-basics/app-user-challenge/node_modules/
+
 # Logs
 logs
 *.log
@@ -13,16 +20,11 @@ lerna-debug.log*
 # Compiled binary addons (https://nodejs.org/api/addons.html)
 build/Release
 
-# Dependency directories
-node_modules/
-jspm_packages/
-
-# CUSTOM - Dependency directories
-node-basics/app-user-challenge/node_modules/
-jspm_packages/
-
 # TypeScript cache
 *.tsbuildinfo
 
 # Optional npm cache directory
 .npm
+
+# Others
+.DS_Store
