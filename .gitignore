@@ -28,3 +28,5 @@ build/Release
 
 # Others
 .DS_Store
+.vscode/
+.vscode/*
