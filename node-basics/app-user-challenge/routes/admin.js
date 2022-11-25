@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
+// /admin/add-product => GET
 router.get('/add-product', (req, res, next) => {
     res.send(
-        `<form action="/product" method="POST">
+        `<form action="/admin/product" method="POST">
             <label for="fname">First name:</label><br>
             <input type="text" id="productName" name="productName"><br>
             <input type="submit" value="Submit">
@@ -11,6 +12,7 @@ router.get('/add-product', (req, res, next) => {
     );
 });
 
+// /admin/add-product => POST
 router.post('/product', (req, res, next) => {
     console.log(req.body);
     res.redirect('/');
