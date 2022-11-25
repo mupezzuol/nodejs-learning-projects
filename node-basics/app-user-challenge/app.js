@@ -1,3 +1,5 @@
+const path = require('path');
+
 // Express Framework
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -12,6 +14,9 @@ const pageNotFound = require('./routes/handlers/pageNotFound');
 
 // Parsing Bodies
 app.use(bodyParser.urlencoded({extended: false}));
+
+// Allow to access public/static files
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Using Routes
 app.use('/admin', adminRoutes);
