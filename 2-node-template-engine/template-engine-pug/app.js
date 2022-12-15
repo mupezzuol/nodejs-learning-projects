@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 // Import Routes
 const adminRoutes = require('./routes/admin').routes;
 const shopRoutes = require('./routes/shop');
-const pageNotFound = require('./routes/handlers/pageNotFound');
+const pageNotFound = require('./routes/pageNotFound');
 
 // Creating an instance of our Application
 const app = express();
