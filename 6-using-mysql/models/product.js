@@ -13,6 +13,7 @@ module.exports = class Product {
   }
 
   save() {
+    // This return a promise
     return db.execute(
       `INSERT INTO ${productTableName} (title, price, description, imageUrl) VALUES (?, ?, ?, ?)`,
       [this.title, this.price, this.description, this.imageUrl]
@@ -29,6 +30,10 @@ module.exports = class Product {
   }
 
   static findById(id){
-    
+    // This return a promise
+    return db.execute(
+      `SELECT * FROM ${productTableName} WHERE id = ?`,
+      [id]
+      );
   }
 };
