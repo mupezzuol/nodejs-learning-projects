@@ -21,6 +21,7 @@ exports.postAddProduct = (req, res, next) => {
   })
   .then(result => {
     console.log('Created Product.');
+    res.redirect('/admin/products');
   })
   .catch(err => {console.log(err)});
 };
@@ -49,15 +50,34 @@ exports.postEditProduct = (req, res, next) => {
   const updatedImageUrl = req.body.imageUrl;
   const updatedDescription = req.body.description;
   const updatedPrice = req.body.price;
-  const updatedProduct = new Product(prodId, updatedTitle, updatedImageUrl, updatedDescription, updatedPrice);
-  updatedProduct.save();
-  res.redirect('/admin/products');
+  Product.findByPk(prodId)
+    .then(product => {
+      product.title = updatedTitle;
+      product.imageUrl = updatedImageUrl;
+      product.description = updatedDescription;
+      product.price = updatedPrice;
+      return product.save();
+    })
+    .then(result => {
+      // This 'then' is for the Promise returned in the line 58 where 'product.save();' is called
+      console.log('UPDATED PRODUCT!');
+      res.redirect('/admin/products');
+    })
+    .catch(err => {console.log(err)});
 };
 
 exports.postDeleteProduct = (req, res, next) => {
   const prodId = req.params.productId;
-  Product.deleteById(prodId);
-  res.redirect('/admin/products');
+  Product.findByPk(prodId)
+    .then(product => {
+      return product.destroy();
+    })
+    .then(result => {
+      // This 'then' is for the Promise returned in the line 72 where 'product.destroy();' is called
+      console.log('DELETED PRODUCT!');
+      res.redirect('/admin/products');
+    })
+    .catch(err => {console.log(err)});
 };
 
 exports.getProducts = (req, res, next) => {
