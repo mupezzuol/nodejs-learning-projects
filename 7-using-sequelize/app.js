@@ -11,6 +11,8 @@ const Product = require('./models/product');
 const User = require('./models/user');
 const Cart = require('./models/cart');
 const CartItem = require('./models/cart-item');
+const Order = require('./models/order');
+const OrderItem = require('./models/order-item');
 
 const app = express();
 
@@ -46,18 +48,24 @@ app.use(errorController.get404);
 // Product
 Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
 Product.belongsToMany(Cart, { through: CartItem}); // Many-to-Many (adding the place where will be added new table between many-to-many)
+Product.belongsToMany(Order, { through: OrderItem}); // Many-to-Many (adding the place where will be added new table between many-to-many)
 
 // User
 User.hasMany(Product);// This line can be optional
 User.hasOne(Cart);
+User.hasMany(Order)
 
 // Cart
 Cart.belongsTo(User);// This line can be optional
 Cart.belongsToMany(Product, { through: CartItem}); // Many-to-Many (adding the place where will be added new table between many-to-many)
 
+// Order
+Order.belongsTo(User);
+Order.belongsToMany(Product, { through: OrderItem});
+
 // Using Sequelize - Init config
 sequelize
-    // .sync({force: true}) -- Force update database, creating and deleting table always, not recommended, just in dev/init project
+    // .sync({force: true}) // Force update database, creating and deleting table always, not recommended, just in dev/init project
     .sync()
     .then(result => {
         // Check if exist User ID 1
