@@ -9,6 +9,8 @@ const errorController = require('./controllers/error');
 //Models
 const Product = require('./models/product');
 const User = require('./models/user');
+const Cart = require('./models/cart');
+const CartItem = require('./models/cart-item');
 
 const app = express();
 
@@ -40,8 +42,18 @@ app.use(shopRoutes);
 
 app.use(errorController.get404);
 
+// DB - RELATIONSHIP
+// Product
 Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
+Product.belongsToMany(Cart, { through: CartItem}); // Many-to-Many (adding the place where will be added new table between many-to-many)
+
+// User
 User.hasMany(Product);// This line can be optional
+User.hasOne(Cart);
+
+// Cart
+Cart.belongsTo(User);// This line can be optional
+Cart.belongsToMany(Product, { through: CartItem}); // Many-to-Many (adding the place where will be added new table between many-to-many)
 
 // Using Sequelize - Init config
 sequelize
