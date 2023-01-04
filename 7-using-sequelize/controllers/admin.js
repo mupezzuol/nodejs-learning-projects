@@ -34,8 +34,16 @@ exports.getEditProduct = (req, res, next) => {
     return req.redirect('/');
   }
   const prodId = req.params.productId;
-  Product.findByPk(prodId)
-    .then(product => {
+  
+  // Using magic method from Sequelize in these relationship
+  req.user
+    .getProducts({where: { id: prodId }})
+    .then(products => {
+      const product = products[0]; // The return is an array
+      if (!product)
+      {
+        return res.redirect('/');
+      }
       res.render('admin/edit-product', {
         pageTitle: 'Edit Product',
         path: '/admin/edit-product',
@@ -83,7 +91,7 @@ exports.postDeleteProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  Product.findAll()
+  req.user.getProducts()
     .then(products => {
       res.render('admin/products', {
         prods: products,
