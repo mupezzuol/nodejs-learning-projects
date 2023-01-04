@@ -13,17 +13,19 @@ exports.postAddProduct = (req, res, next) => {
   const imageUrl = req.body.imageUrl;
   const description = req.body.description;
   const price = req.body.price;
-  Product.create({
-    title: title,
-    price: price,
-    description: description,
-    imageUrl: imageUrl
-  })
-  .then(result => {
-    console.log('Created Product.');
-    res.redirect('/admin/products');
-  })
-  .catch(err => {console.log(err)});
+  // Using the Magic Method that Sequelize gives us when we have some relationship
+  req.user
+    .createProduct({
+      title: title,
+      price: price,
+      description: description,
+      imageUrl: imageUrl
+    })
+    .then(result => {
+      console.log('Created Product.');
+      res.redirect('/admin/products');
+    })
+    .catch(err => {console.log(err)});
 };
 
 exports.getEditProduct = (req, res, next) => {
