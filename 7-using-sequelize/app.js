@@ -6,6 +6,10 @@ const bodyParser = require('body-parser');
 
 const errorController = require('./controllers/error');
 
+//Models
+const Product = require('./models/product');
+const User = require('./models/user');
+
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -22,8 +26,12 @@ app.use(shopRoutes);
 
 app.use(errorController.get404);
 
+Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
+User.hasMany(Product);// This line can be optional
+
 // Using Sequelize - Init config
-sequelize.sync()
+sequelize
+    .sync()
     .then(result => {
         console.log(result);
         app.listen(3000);
